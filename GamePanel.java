@@ -101,7 +101,7 @@ public class GamePanel extends JPanel
 		BufferedImage subBuf;
 		ImageIcon icon;
 		icon = new ImageIcon(buf);
-		origin = new Cell(icon, (int) (cellWidth*2.5),(int) (cellHeight*2.5));
+		origin = new Cell(icon, buf.getWidth(), buf.getHeight());
 		origin.setLocation(cellWidth*col+2, 0);
 		this.add(origin);
 		for (int i=0, num=0; i<row; i++){
@@ -249,11 +249,14 @@ public class GamePanel extends JPanel
 				else {	//再移y坐标，这里要分情况
 					if (ord[id1].y>objY) {
 						if (ord[id1].x==col-1) {
-							if (blankY>=ord[id1].y){
+							if (blankY>ord[id1].y){
 								return (blankX==ord[id1].x) ? Direction.RIGHT : Direction.DOWN;
 							}
+							else if (blankY==ord[id1].y) {
+								return (blankX==col-2) ? Direction.DOWN : Direction.LEFT;
+							}
 							else {
-								return (blankX==ord[id1].x) ? Direction.UP : Direction.LEFT;
+								return (blankX==col-1) ? Direction.UP : Direction.LEFT;
 							}
 						}
 						else {

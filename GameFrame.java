@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.imageio.stream.*;
 import javax.imageio.*;
 import java.util.*;
+import java.applet.*;
+import java.net.*;
 
 public class GameFrame extends JFrame{
 	//放按键的面板
@@ -27,6 +29,10 @@ public class GameFrame extends JFrame{
 	//提示按键
 	public JButton bHint = new JButton("最短步数算法提示");
 	public JButton artHint = new JButton("人工算法提示");
+	//bgm
+	public AudioClip aau;
+	public JButton bPlay = new JButton("播放");
+	public JButton bStop = new JButton("暂停");
 	public GameFrame(){
 		super("拼图游戏");
 		panel.setLayout(new FlowLayout());
@@ -36,11 +42,20 @@ public class GameFrame extends JFrame{
 		panel.add(sShuffle);
 		panel.add(bHint);
 		panel.add(artHint);
+		panel.add(bPlay);
+		panel.add(bStop);
 		//con将游戏面板与按键面板组合
 		Container con = this.getContentPane();
 		con.add(panel, BorderLayout.NORTH);
+		//bgm
+		try{
+		File tmpF = new File("bgm\\default.wav");
+		aau = Applet.newAudioClip(tmpF.toURL());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		//新建游戏面板，默认为3x3, 从image中读取图像
-		GamePanel gamepane = new GamePanel(10, 10, new File("image\\default.jpg"),new File("image\\background.jpg") );
+		GamePanel gamepane = new GamePanel(4, 4, new File("image\\default.jpg"),new File("image\\background.jpg") );
 		con.add(gamepane, BorderLayout.CENTER);
 		this.setBounds(10, 10, 900, 750);
 		this.setVisible(true);
@@ -74,6 +89,16 @@ public class GameFrame extends JFrame{
 		artHint.addActionListener(new ActionListener(){
 			public void actionPerformed(final ActionEvent e){
 				gamepane.move(gamepane.getHint());
+			}
+		});
+		bPlay.addActionListener(new ActionListener(){
+			public void actionPerformed(final ActionEvent e){
+				aau.loop();
+			}
+		});
+		bStop.addActionListener(new ActionListener(){
+			public void actionPerformed(final ActionEvent e){
+				aau.stop();
 			}
 		});
 	}
